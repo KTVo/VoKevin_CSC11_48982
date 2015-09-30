@@ -1,9 +1,17 @@
+/*
+   Kevin Vo
+   Sept 29, 2015
+   CSC-11 (48982)
+   Assignment: Div/Mod Shift 09/30/15
+   Problem: Mod Shift
+*/
+
 	.global _start
 _start:
 	MOV R1, #122	@Num
 	MOV R2, #5	@Denom
 	MOV R3, #0	@Scale
-	MOV R4, R2	@Denom's resetter
+	MOV R4, R2	@Original Value, Denom's resetter
 	MOV R0, #0	@Use to display remainder
 
 _numChecker:
