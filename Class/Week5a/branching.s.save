@@ -1,0 +1,15 @@
+.text
+	.global main
+main:
+	MOV R1, #2		@Assign #2 to R1
+	MOV R2, #2		@Assign #2 to R2
+	CMP R1, R2		@Compare R1 to R2
+	BEQ case_equal
+		@If Equal Branch to case_equal
+case_different:
+	MOV R0, #2
+	b end
+case_equal:
+	MOV R0, #1
+end: 
+	bx lr
