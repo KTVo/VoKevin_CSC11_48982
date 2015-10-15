@@ -1,3 +1,10 @@
+/* Kevin Vo
+   10/14/15
+   CSC-11 (48982)
+   Assignment: In-Class-Lab
+   Problem: mult_by_5
+*/
+
 .balign 4
 return2: .word 0
  
@@ -17,4 +24,3 @@ mult_by_5:
     bx lr                            /* return from main using lr */
 address_of_return2 : .word return2
 
-BAL main

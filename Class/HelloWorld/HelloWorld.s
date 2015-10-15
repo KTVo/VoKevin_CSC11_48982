@@ -1,3 +1,10 @@
+/* Kevin Vo
+   10/14/15
+   CSC-11 (48982)
+   Assignment: In-Class-Lab
+   Problem: Hello word
+*/
+
 /* -- hello01.s */
 .data
  
