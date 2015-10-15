@@ -2,7 +2,7 @@
    10/14/15
    CSC-11 (48982)
    Assignment: In-Class-Lab
-   Problem: printf02
+   Problem: mult_by_5_part2
 */
 
 /* -- printf02.s */
