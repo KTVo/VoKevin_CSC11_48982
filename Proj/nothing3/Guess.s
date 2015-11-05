@@ -27,6 +27,7 @@ return2: .word 0
 
 	.global main
 main:
+	MOV R7, #100 @Call back
 	MOV R5, #0
 	LDR R1, address_of_return
 	STR LR, [R1]

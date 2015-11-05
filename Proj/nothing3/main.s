@@ -4,13 +4,7 @@
 .balign 4
 Prompt1: .asciz "Objective: Solve the challenges to obtain weapon and kill the beast.\n"
 .balign 4
-chest1: .asciz "\n*******************\n"
-.balign 4
-chest2: .asciz "*------[ o ]------*\n"
-.balign 4
-chest3: .asciz "*     %d/%d =?    *\n"
-.balign 4
-chest4: .asciz "*******************\n"
+chest1: .asciz "\n*******************\n*------[ o ]------*\n*     %d/%d =?    *\n*******************\n"
 
 //Market
 .balign 4
@@ -41,7 +35,8 @@ disWin: .asciz "Cangratulations, you have killed the monster before he has woken
 disLos: .asciz "Them monster has not been killed in time. He woken up and killed you.\n"
 .balign 4
 return: .word 0
-
+.balign 4
+storeit: .word 0
 .text
 	.global main
 main:
@@ -51,7 +46,33 @@ main:
 	LDR R0, address_of_Prompt1
 	bl printf
 
+	MOV R5, #0; //Setting starting balance
+	MOV R6, #3; //Setting starting damage
 
+	bl ranNum
+	MOV R2, R8
+
+	bl ranNum
+	MOV R3, R8
+
+	MUL R2, R3, R2
+
+	MOV R9, #0
+
+calChal1:
+	SUB R2, R2, R3
+	ADD R9, R9, #1
+        CMP R2, #1
+		BGT calChal1
+		BLE Challenge1
+Challenge1:
+	MOV R2, R2
+	MOV R1, R3
+	LDR R0, address_of_chest1
+	bl printf
+
+
+	CMP R9, R1
 
 	LDR LR, address_of_return
 	LDR LR, [LR]
@@ -59,14 +80,25 @@ main:
 	BX LR
 
 
+
+address_of_storeit: .word storeit
 address_of_Prompt1: .word Prompt1
 address_of_chest1: .word chest1
-address_of_chest2: .word chest2
-address_of_chest3: .word chest3
-address_of_chest4: .word chest4
 address_of_return: .word return
 
-address_of_
+address_of_disBalance: .word disBalance
+address_of_disStore1: .word disStore1
+address_of_Error1: .word Error1
+address_of_NoMoneyM: .word NoMoneyM
+
+address_of_BTitle: .word BTitle
+address_of_BHealth: .word BHealth
+address_of_PDamage: .word PDamage
+address_of_PInstru: .word PInstru
+address_of_disNumTurn: .word disNumTurn
+
+address_of_disWin: .word disWin
+address_of_disLos: .word disLos
 //External
 .global printf
 .global scanf
