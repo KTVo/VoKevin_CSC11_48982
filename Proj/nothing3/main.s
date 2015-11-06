@@ -10,7 +10,7 @@ chest1: .asciz "\n*******************\n*------[ o ]------*\n*     %dMOD%d =?    
 .balign 4
 disBalance: .asciz "Balance = $%d"
 .balign 4
-disStore1: .asciz "\n--- Town Store ---\n*------[ o ]------*\n*------[ o ]------*\n*     %d/%d =?    *\n*******************\n"
+disStore1: .asciz "\n--- Town Store ---\n*------[ o ]------*\n*------[ o ]------*\n*     %d/%d =?    \n*******************\n"
 .balign 4
 Error1: .asciz "\nInsufficient Funds or Invalid Selection.\n"
 .balign 4
@@ -55,13 +55,13 @@ main:
 	MOV R6, #3; //Setting starting damage
 
 	bl ranNum
-	MOV R8, R1
-
+	MOV R8, R1//For Displaying original value
 calChal1:
 	SUBS R1, R1, #2//Answer
         CMP R1, #1
 		BGT calChal1
 Challenge1:
+	MOV R9, R1//Stores answer aftermath
         LDR R0, address_of_check
         bl printf
 
@@ -77,7 +77,7 @@ Challenge1:
 	LDR R0, address_of_storeit
 	LDR R0, [R0]
 
-	CMP R8, R0
+	CMP R9, R0
 		BEQ correct
 		BNE incorrect
 correct:
@@ -90,12 +90,16 @@ Challenge1Con:
 	MOV R1, R0
 	LDR R0, address_of_cInput
 	bl printf
-	MOV R1, R8
+	MOV R1, R9
 	LDR R0, address_of_check
 	bl printf
 	MOV R1, R5
 	LDR R0, address_of_disBalance
 	bl printf
+
+Challenge2:
+	
+
 _exit:
 	LDR LR, address_of_return
 	LDR LR, [LR]
