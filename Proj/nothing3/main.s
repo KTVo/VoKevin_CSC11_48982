@@ -6,34 +6,6 @@ Prompt1: .asciz "Objective: Solve the challenges to obtain weapon and kill the b
 .balign 4
 chest1: .asciz "\n*******************\n*------[ o ]------*\n*     %dMOD%d =?    *\n*******************\n"
 
-//Market
-.balign 4
-disBalance: .asciz "Balance = $%d"
-.balign 4
-disStore1: .asciz "\n--- Town Store ---\n*------[ o ]------*\n*------[ o ]------*\n*     %d/%d =?    \n*******************\n"
-.balign 4
-Error1: .asciz "\nInsufficient Funds or Invalid Selection.\n"
-.balign 4
-NoMoneyM:.asciz "You cannot afford anything else. Now leaving store.\n"
-
-//Boss
-.balign 4
-BTitle: .asciz "\n--- The Sleeping Giant ---\n"
-.balign 4
-BHealth: .asciz "\nBoss' HP: %d\n"
-.balign 4
-PDamage: .asciz "Player's Damage: %d\n"
-.balign 4
-PInstru: .asciz "Enter '1' to attack: "
-.balign 4
-disNumTurn: .asciz "%d/7 Turns\n"
-.balign 4
-check: .asciz "Answer = %d"
-//End Game
-.balign 4
-disWin: .asciz "Cangratulations, you have killed the monster before he has woken from his slumbers.\n"
-.balign 4
-disLos: .asciz "Them monster has not been killed in time. He woken up and killed you.\n"
 .balign 4
 return: .word 0
 .balign 4
@@ -41,12 +13,18 @@ storeit: .word 0
 .balign 4
 scan: .asciz "%d"
 .balign 4
-cInput: .asciz "Input = %d"
-.balign 4
 pDamage: .word 0 //Stores player's damage to memory
 .balign 4
-askBonus: .asciz "Enter 'a' if you'd like to do the Bonus round. If you win, you'll get a total of 10 TURNS to kill the monster instead of just 7.\n"
+askBonus: .asciz "\nEnter 'a' if you'd like to do the Bonus round. If you win, you'll get a total of 10 TURNS to kill the monster instead of just 7.\n"
+.balign 4
+scanString: .asciz "%s"
+.balign 4
+inA: .asciz "a"
+.balign 4
+holdString: .word 0
 
+.balign 4
+dispDamage: .asciz "Player's Damage: %d\n"
 
 .text
 	.global main
@@ -68,8 +46,6 @@ calChal1:
 		BGT calChal1
 Challenge1:
 	MOV R9, R1//Stores answer aftermath
-        LDR R0, address_of_check
-        bl printf
 
 	MOV R2, #2 //Bottom
 	MOV R1, R8//R1 Top
@@ -90,20 +66,14 @@ correct:
 	ADD R5, R5, #6
 	LDR R1, address_of_pDamage
 	STR R5, [R1]
+	LDR R0, address_Of_dispDamage
+	bl printf
 	bl Challenge1Con
 incorrect:
 	ADD R5, R5, #66
 	bl Challenge1Con
 Challenge1Con:
-	MOV R1, R0
-	LDR R0, address_of_cInput
-	bl printf
-	MOV R1, R9
-	LDR R0, address_of_check
-	bl printf
-	MOV R1, R5
-	LDR R0, address_of_disBalance
-	bl printf
+
 
 Challenge2:
 	bl Pattern
@@ -111,13 +81,29 @@ Challenge2:
 	LDR R1, [R1]
 	CMP R9, #123
 		ADDEQ R1, R1, #10
-	LDR R0, address_of_check
-	bl printf
 askGuessBonus:
 	LDR R0, address_of_askBonus
+	bl printf
+	LDR R0, address_of_scanString
+	LDR R1, address_of_holdString
+	bl scanf
+
+	//Checks if R2(has input) == 'a'
+	LDR R1, address_of_holdString
+	LDR R2, [R1]
+
+	LDR R4, address_of_inA
+	LDR R4, [R4]
+
+	CMP R2, R4
+		BEQ _GuessBonus
+		BNE _boss
 	//SETUP if input != 'a' skip it
 _GuessBonus:
-	@BAL guessBonus //Win this and get 3 extras turn to kill the Boss, a total of 10 turns
+	bl guessBonus //Win this and get 3 extras turn to kill the Boss, a total of 10 turns
+
+_boss:
+	@bossFight
 _exit:
 	LDR LR, address_of_return
 	LDR LR, [LR]
@@ -125,28 +111,19 @@ _exit:
 	BX LR
 
 address_of_pDamage: .word pDamage
-address_of_cInput: .word cInput
-address_of_check: .word check
 address_of_storeit: .word storeit
 address_of_Prompt1: .word Prompt1
 address_of_chest1: .word chest1
 address_of_return: .word return
 address_of_scan: .word scan
 
-address_of_disBalance: .word disBalance
-address_of_disStore1: .word disStore1
-address_of_Error1: .word Error1
-address_of_NoMoneyM: .word NoMoneyM
-
-address_of_BTitle: .word BTitle
-address_of_BHealth: .word BHealth
-address_of_PDamage: .word PDamage
-address_of_PInstru: .word PInstru
-address_of_disNumTurn: .word disNumTurn
-
 address_of_askBonus: .word askBonus
-address_of_disWin: .word disWin
-address_of_disLos: .word disLos
+
+address_of_holdString: .word holdString
+address_of_inA: .word inA
+address_of_scanString: .word scanString
+
+address_of_dispDamage: .word dispDamage
 //External
 .global printf
 .global scanf

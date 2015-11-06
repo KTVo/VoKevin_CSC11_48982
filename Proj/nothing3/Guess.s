@@ -1,7 +1,7 @@
 //Data
 .data
 .balign 4
-Prompt1: .asciz "Obj: Guess a number 0 and 23. The game will let you know if your INPUT is too HIGH or LOW. You'll get 5 TRIES to get it right.\n"
+Prompt1: .asciz "\nObj: Guess a number 0 and 23. The game will let you know if your INPUT is too HIGH or LOW. You'll get 5 TRIES to get it right.\n"
 .balign 4
 disTries: .asciz "		%d/5 TRIES\n"
 .balign 4
@@ -11,7 +11,7 @@ disGrt: .asciz "%d is too High.\n"
 .balign 4
 disLes: .asciz "%d is too Low.\n"
 .balign 4
-cInput: .asciz "You've guessed correctly!\n You now have 10 TURNS instead of 7 TURNS to kill the monster.\n"
+cInput: .asciz "\nYou've guessed correctly!\n You now have 10 TURNS instead of 7 TURNS to kill the monster.\n"
 
 .balign 4
 return: .word 0
@@ -21,18 +21,19 @@ input: .word 0
 scanG: .asciz "%d"
 
 .balign 4
-return2: .word 0
+returnG: .word 0
+
 
 .text
 
-	.global main
-main:
-	MOV R8, #78 //Preset lose code
-	MOV R7, #1 //Counts loops to display disTries
-	MOV R5, #0
-	LDR R1, address_of_return
+	.global guessBonus
+guessBonus:
+	LDR R1, address_of_returnG
 	STR LR, [R1]
 
+	MOV R8, #78 //Preset, throws lose code
+	MOV R7, #1 //Counts loops for display disTries
+	MOV R5, #0
 	LDR R0, address_of_Prompt1
 	bl printf
 
@@ -63,7 +64,7 @@ gamble:
 		BGT greater
 
 _exitGamble:
-	LDR LR, address_of_return
+	LDR LR, address_of_returnG
 	LDR LR, [LR]
 	BX LR
 
@@ -92,15 +93,12 @@ greater:
 address_of_Prompt1: .word Prompt1
 address_of_disTries: .word disTries
 address_of_askGuess: .word askGuess
-address_of_return: .word return
+address_of_returnG: .word returnG
 address_of_scanG: .word scanG
 address_of_input: .word input
 address_of_disGrt: .word disGrt
 address_of_disLes: .word disLes
 address_of_cInput: .word cInput
-
-
-
 
 
 //External
