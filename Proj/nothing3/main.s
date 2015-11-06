@@ -63,11 +63,18 @@ Challenge1:
 		BEQ correct
 		BNE incorrect
 correct:
-	ADD R5, R5, #6
+	MOV R5, #3
+	ADD R5, R5, #3
 	LDR R1, address_of_pDamage
 	STR R5, [R1]
-	LDR R0, address_Of_dispDamage
+
+	LDR R2, address_of_pDamage
+	LDR R2, [R2]
+
+	MOV R1, R2
+	LDR R0, address_of_dispDamage
 	bl printf
+
 	bl Challenge1Con
 incorrect:
 	ADD R5, R5, #66
@@ -77,10 +84,23 @@ Challenge1Con:
 
 Challenge2:
 	bl Pattern
+	//calls address_of_pDamage
+	//and loads pDamage R1 <- *R1
+	LDR R5, address_of_pDamage
+	LDR R5, [R5]
+
+	CMP R9, #123
+		ADDEQ R5, R5, #10
+	LDR R1, address_of_pDamage
+	STR R5, [R1]
+
 	LDR R1, address_of_pDamage
 	LDR R1, [R1]
-	CMP R9, #123
-		ADDEQ R1, R1, #10
+
+	@MOV R1, R5
+	LDR R0, address_of_dispDamage
+	bl printf
+
 askGuessBonus:
 	LDR R0, address_of_askBonus
 	bl printf
@@ -103,7 +123,7 @@ _GuessBonus:
 	bl guessBonus //Win this and get 3 extras turn to kill the Boss, a total of 10 turns
 
 _boss:
-	@bossFight
+	@bl bossFight
 _exit:
 	LDR LR, address_of_return
 	LDR LR, [LR]
