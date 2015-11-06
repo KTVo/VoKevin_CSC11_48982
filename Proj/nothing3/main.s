@@ -55,23 +55,18 @@ main:
 	MOV R6, #3; //Setting starting damage
 
 	bl ranNum
-	ADD R8, R8, #1
-	MOV R1, R8
-	bl ranNum
-	ADD R7, R7, #1
-	MOV R2, R7
-	ADDS R1, R1, R2
 	MOV R8, R1
 
 calChal1:
-	SUBS R1, R1, R2//Answer
+	SUBS R1, R1, #2//Answer
         CMP R1, #1
 		BGT calChal1
-		@BLE Challenge1
 Challenge1:
-	MOV R9, R1 //store answer
-	MOV R2, R2 //Bottom
-	MOV R1, R8 //Top
+        LDR R0, address_of_check
+        bl printf
+
+	MOV R2, #2 //Bottom
+	MOV R1, R8//R1 Top
 	LDR R0, address_of_chest1
 	bl printf
 
@@ -82,7 +77,7 @@ Challenge1:
 	LDR R0, address_of_storeit
 	LDR R0, [R0]
 
-	CMP R9, R0
+	CMP R8, R0
 		BEQ correct
 		BNE incorrect
 correct:
@@ -95,7 +90,7 @@ Challenge1Con:
 	MOV R1, R0
 	LDR R0, address_of_cInput
 	bl printf
-	MOV R1, R9
+	MOV R1, R8
 	LDR R0, address_of_check
 	bl printf
 	MOV R1, R5

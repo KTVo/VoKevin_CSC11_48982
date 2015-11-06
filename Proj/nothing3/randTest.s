@@ -23,16 +23,7 @@ ranNum:
 	mov r2,#14                   /* Move 90 to r2 */
 		                         /* We want rand()%90+10 so cal divMod with rand()%90 */
 	bl divMod                    /* Call divMod function to get remainder */
-	@add r1,#10                   /* Remainder in r1 so add 10 giving between 10 and 99 -> 2 digits */
-	
-	MOV R8, R1	//It moves random number to R8 for comparison
-
-	bl rand
-	MOV R1, R0, ASR #1
-	MOV R2, #14
-	bl divMod
-	@ADD R1, #10
-	MOV R7, R1
+	add r1,#10                   /* Remainder in r1 so add 10 giving between 10 and 99 -> 2 digits */
 
 
 
