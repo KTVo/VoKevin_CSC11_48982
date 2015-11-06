@@ -4,7 +4,7 @@
 .balign 4
 Prompt1: .asciz "Objective: Solve the challenges to obtain weapon and kill the beast.\n"
 .balign 4
-chest1: .asciz "\n*******************\n*------[ o ]------*\n*     %d/%d =?    *\n*******************\n"
+chest1: .asciz "\n*******************\n*------[ o ]------*\n*     %dMOD%d =?    *\n*******************\n"
 
 //Market
 .balign 4
@@ -27,7 +27,8 @@ PDamage: .asciz "Player's Damage: %d\n"
 PInstru: .asciz "Enter '1' to attack: "
 .balign 4
 disNumTurn: .asciz "%d/7 Turns\n"
-
+.balign 4
+check: .asciz "Answer = %d"
 //End Game
 .balign 4
 disWin: .asciz "Cangratulations, you have killed the monster before he has woken from his slumbers.\n"
@@ -37,6 +38,10 @@ disLos: .asciz "Them monster has not been killed in time. He woken up and killed
 return: .word 0
 .balign 4
 storeit: .word 0
+.balign 4
+scan: .asciz "%d"
+.balign 4
+cInput: .asciz "Input = %d"
 .text
 	.global main
 main:
@@ -50,41 +55,65 @@ main:
 	MOV R6, #3; //Setting starting damage
 
 	bl ranNum
-	MOV R2, R8
-
+	ADD R8, R8, #1
+	MOV R1, R8
 	bl ranNum
-	MOV R3, R8
-
-	MUL R2, R3, R2
-
-	MOV R9, #0
+	ADD R7, R7, #1
+	MOV R2, R7
+	ADDS R1, R1, R2
+	MOV R8, R1
 
 calChal1:
-	SUB R2, R2, R3
-	ADD R9, R9, #1
-        CMP R2, #1
+	SUBS R1, R1, R2//Answer
+        CMP R1, #1
 		BGT calChal1
-		BLE Challenge1
+		@BLE Challenge1
 Challenge1:
-	MOV R2, R2
-	MOV R1, R3
+	MOV R9, R1 //store answer
+	MOV R2, R2 //Bottom
+	MOV R1, R8 //Top
 	LDR R0, address_of_chest1
 	bl printf
 
+	LDR R0, address_of_scan
+	LDR R1, address_of_storeit
+	bl scanf
 
-	CMP R9, R1
+	LDR R0, address_of_storeit
+	LDR R0, [R0]
 
+	CMP R9, R0
+		BEQ correct
+		BNE incorrect
+correct:
+	ADD R5, R5, #50
+	bl Challenge1Con
+incorrect:
+	ADD R5, R5, #66
+	bl Challenge1Con
+Challenge1Con:
+	MOV R1, R0
+	LDR R0, address_of_cInput
+	bl printf
+	MOV R1, R9
+	LDR R0, address_of_check
+	bl printf
+	MOV R1, R5
+	LDR R0, address_of_disBalance
+	bl printf
+_exit:
 	LDR LR, address_of_return
 	LDR LR, [LR]
 
 	BX LR
 
-
-
+address_of_cInput: .word cInput
+address_of_check: .word check
 address_of_storeit: .word storeit
 address_of_Prompt1: .word Prompt1
 address_of_chest1: .word chest1
 address_of_return: .word return
+address_of_scan: .word scan
 
 address_of_disBalance: .word disBalance
 address_of_disStore1: .word disStore1
