@@ -1,7 +1,7 @@
 //Data
 .data
 .balign 4
-promptPat: .asciz "Guess which number goes next to win a weapon.\n"
+promptPat: .asciz "\n\nGuess which number goes next to win a weapon.\n"
 .balign 4
 chestTop: .asciz "\n*******************\n*------[ o ]------*\n*"
 .balign 4
@@ -23,8 +23,8 @@ patCorM: .asciz "\nThe input was correct. You've earned a LUPARA +10 Damage.\n"
 .balign 4
 patWro: .asciz "\nSorry, but input should = %d. The prize will NOT be given.\n"
 .text
-	.global main
-main:
+	.global Pattern
+Pattern:
 	LDR R1, address_of_returnPat
 	STR LR, [R1]
 

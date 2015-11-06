@@ -98,7 +98,7 @@ Challenge1Con:
 	bl printf
 
 Challenge2:
-	//bl pattern
+	bl Pattern
 
 _exit:
 	LDR LR, address_of_return
