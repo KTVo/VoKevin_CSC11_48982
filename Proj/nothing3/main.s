@@ -89,16 +89,16 @@ Challenge2:
 	LDR R5, address_of_pDamage
 	LDR R5, [R5]
 
-	CMP R9, #123
-		ADDEQ R5, R5, #10
-	LDR R1, address_of_pDamage
-	STR R5, [R1]
+	CMP R9, #123			//Checks is WIN code is thrown from Pattern
+		ADDEQ R5, R5, #10	//Adds 10 extra damage only and if only WIN code #123 is thrown
 
-	LDR R1, address_of_pDamage
-	LDR R1, [R1]
+	LDR R1, address_of_pDamage	//Loads the address_of_pDamage again to store the "maybe" changed value of pDamage
+	STR R5, [R1]                    //Stores R5 -> [R1](*R1)
 
-	@MOV R1, R5
-	LDR R0, address_of_dispDamage
+	LDR R1, address_of_pDamage	//Calls address_of_pDamage again to display it
+	LDR R1, [R1]                    //Sets [R1](*R1) -> R1 for ouput
+
+	LDR R0, address_of_dispDamage	//Outputs player's damage
 	bl printf
 
 askGuessBonus:
@@ -110,15 +110,15 @@ askGuessBonus:
 
 	//Checks if R2(has input) == 'a'
 	LDR R1, address_of_holdString
-	LDR R2, [R1]
+	LDR R2, [R1]		//Loads *R1 into R2
 
-	LDR R4, address_of_inA
-	LDR R4, [R4]
+	LDR R4, address_of_inA //Loads address_of_inA, to check if input(R2) == 'a'
+	LDR R4, [R4]           //Puts [R4](*R4) -> R4 for comparison
 
 	CMP R2, R4
-		BEQ _GuessBonus
-		BNE _boss
-	//SETUP if input != 'a' skip it
+		BEQ _GuessBonus //If player enters 'a' then GuessBonus will start
+		BNE _boss       // If player enters != 'a' then it'll just banch to the boss
+
 _GuessBonus:
 	bl guessBonus //Win this and get 3 extras turn to kill the Boss, a total of 10 turns
 
