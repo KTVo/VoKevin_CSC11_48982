@@ -42,6 +42,12 @@ storeit: .word 0
 scan: .asciz "%d"
 .balign 4
 cInput: .asciz "Input = %d"
+.balign 4
+pDamage: .word 0 //Stores player's damage to memory
+.balign 4
+askBonus: .asciz "Enter 'a' if you'd like to do the Bonus round. If you win, you'll get a total of 10 TURNS to kill the monster instead of just 7.\n"
+
+
 .text
 	.global main
 main:
@@ -81,7 +87,9 @@ Challenge1:
 		BEQ correct
 		BNE incorrect
 correct:
-	ADD R5, R5, #50
+	ADD R5, R5, #6
+	LDR R1, address_of_pDamage
+	STR R5, [R1]
 	bl Challenge1Con
 incorrect:
 	ADD R5, R5, #66
@@ -99,13 +107,24 @@ Challenge1Con:
 
 Challenge2:
 	bl Pattern
-
+	LDR R1, address_of_pDamage
+	LDR R1, [R1]
+	CMP R9, #123
+		ADDEQ R1, R1, #10
+	LDR R0, address_of_check
+	bl printf
+askGuessBonus:
+	LDR R0, address_of_askBonus
+	//SETUP if input != 'a' skip it
+_GuessBonus:
+	@BAL guessBonus //Win this and get 3 extras turn to kill the Boss, a total of 10 turns
 _exit:
 	LDR LR, address_of_return
 	LDR LR, [LR]
 
 	BX LR
 
+address_of_pDamage: .word pDamage
 address_of_cInput: .word cInput
 address_of_check: .word check
 address_of_storeit: .word storeit
@@ -125,6 +144,7 @@ address_of_PDamage: .word PDamage
 address_of_PInstru: .word PInstru
 address_of_disNumTurn: .word disNumTurn
 
+address_of_askBonus: .word askBonus
 address_of_disWin: .word disWin
 address_of_disLos: .word disLos
 //External

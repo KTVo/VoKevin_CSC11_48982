@@ -1,9 +1,9 @@
 //Data
 .data
 .balign 4
-Prompt1: .asciz "Unpon coming to the casino you have been unknowingly ingesting poison.\n" 
+Prompt1: .asciz "Obj: Guess a number 0 and 23. The game will let you know if your INPUT is too HIGH or LOW. You'll get 5 TRIES to get it right.\n"
 .balign 4
-Prompt2: .asciz "You now have 6 turns to guess the dealer's number, if you haven't guessed it by 6 turns, the poison will have reached your heart.\n\n"
+disTries: .asciz "		%d/5 TRIES\n"
 .balign 4
 askGuess: .asciz "Enter a number: "
 .balign 4
@@ -11,7 +11,7 @@ disGrt: .asciz "%d is too High.\n"
 .balign 4
 disLes: .asciz "%d is too Low.\n"
 .balign 4
-cInput: .asciz "You've guessed correctly!\n You now have $400 extra.\n"
+cInput: .asciz "You've guessed correctly!\n You now have 10 TURNS instead of 7 TURNS to kill the monster.\n"
 
 .balign 4
 return: .word 0
@@ -27,32 +27,37 @@ return2: .word 0
 
 	.global main
 main:
-	MOV R7, #100 @Call back
+	MOV R8, #78 //Preset lose code
+	MOV R7, #1 //Counts loops to display disTries
 	MOV R5, #0
 	LDR R1, address_of_return
 	STR LR, [R1]
 
 	LDR R0, address_of_Prompt1
 	bl printf
-	LDR R0, address_of_Prompt2
-	bl printf
 
+//Loops back to this
 gamble:
 	CMP R5, #5
 		BEQ _exitGamble
 	LDR R0, address_of_askGuess
 	bl printf
 
+	MOV R1, R7
+	LDR R0, address_of_disTries
+	bl printf
 	//scan
 	LDR R0, address_of_scanG
 	LDR R1, address_of_input
 	bl scanf
 
+	ADD R7, R7, #1
+
 	LDR R0, address_of_input
 	LDR R0, [R0]
 	MOV R9, R0
 	bl ranNum
-	CMP R9, R8
+	CMP R9, R1
 		BEQ correct
 		BLT lesser
 		BGT greater
@@ -65,7 +70,7 @@ _exitGamble:
 correct:
 	LDR R0, address_of_cInput
 	bl printf
-	ADD R4, R4, #400
+	MOV R8, #169 //Win code
 	bl _exitGamble
 
 lesser:
@@ -85,7 +90,7 @@ greater:
 	bl gamble
 
 address_of_Prompt1: .word Prompt1
-address_of_Prompt2: .word Prompt2
+address_of_disTries: .word disTries
 address_of_askGuess: .word askGuess
 address_of_return: .word return
 address_of_scanG: .word scanG
