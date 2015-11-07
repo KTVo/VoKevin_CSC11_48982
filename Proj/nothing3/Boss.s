@@ -1,11 +1,14 @@
 //Data
 .data
 .balign 4
-PromptBoss: .asciz "\nAs expected the monster is sleeping as you approached it.\nKill him in %d turns or it shall awaken and slaughter you.\n"
+PromptBoss: .asciz "\nAs expected the monster is sleeping as you approached it.\nKill it before it wakes up and slaughters you.\n"
 .balign 4
-bossTurn: .asciz "%d/%d TURN\n"
+bossTurn: .asciz "                     %d/%d TURN\n"
 .balign 4
-scanBoss: "%d"
+scanBoss: .asciz "%d"
+.balign 4
+disbossHealth: .asciz "Boss' Health: %d"
+
 
 .balign 4
 bWinMess: .asciz "\nCongratulations, you have beaten the boss and have won the game!\n"
@@ -43,6 +46,10 @@ for_loop_boss:
 	LDR R0, address_of_bossTurn
 	bl printf
 
+	MOV R1, R9
+	LDR R0, address_of_disbossHealth
+	bl printf
+
 	LDR R0, address_of_scanBoss
 	LDR R1, address_of_inputBoss
 	bl scanf
@@ -59,7 +66,7 @@ for_loop_boss:
 checkWinBoss:
 	CMP R9, #0
 		BLE bossWIN
-		BGT bosLOSS
+		BGT bossLOSS
 
 bossWIN:
 	LDR R0, address_of_bWinMess
@@ -78,8 +85,14 @@ _exitBoss:
 
 
 address_of_PromptBoss: .word PromptBoss
-address_of_returnBoss: .word returnBoss
 address_of_bossTurn: .word bossTurn
+address_of_disbossHealth: .word disbossHealth
+address_of_scanBoss: .word scanBoss
+address_of_bWinMess: .word bWinMess
+address_of_bLossMess: .word bLossMess
+address_of_inputBoss: .word inputBoss
+address_of_returnBoss: .word returnBoss
+
 
 //External
 .global printf
