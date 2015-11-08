@@ -1,0 +1,46 @@
+﻿d
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	new file:   Proj/Project 1 Writeup.docx
+#	deleted:    Proj/Project 1/Boss.o
+#	deleted:    Proj/Project 1/Boss.s
+#	deleted:    Proj/Project 1/Guess.o
+#	deleted:    Proj/Project 1/Guess.s
+#	deleted:    Proj/Project 1/Pat.o
+#	deleted:    Proj/Project 1/Pat.s
+#	deleted:    Proj/Project 1/Project1
+#	deleted:    Proj/Project 1/README.md
+#	deleted:    Proj/Project 1/divMod.o
+#	deleted:    Proj/Project 1/divMod.s
+#	deleted:    Proj/Project 1/main.o
+#	deleted:    Proj/Project 1/main.s
+#	deleted:    Proj/Project 1/randTest.o
+#	deleted:    Proj/Project 1/randTest.s
+#	new file:   Proj/Vo_Kevin_Project 1 Checklist.txt
+#	new file:   Proj/Vo_Kevin_Project1_C++_48982/.dep.inc
+#	new file:   Proj/Vo_Kevin_Project1_C++_48982/Boss.h
+#	new file:   Proj/Vo_Kevin_Project1_C++_48982/Guess.h
+#	new file:   Proj/Vo_Kevin_Project1_C++_48982/Makefile
+#	new file:   Proj/Vo_Kevin_Project1_C++_48982/Pattern.h
+#	new file:   Proj/Vo_Kevin_Project1_C++_48982/build/Debug/Cygwin-Windows/main.o
+#	new file:   Proj/Vo_Kevin_Project1_C++_48982/dist/Debug/Cygwin-Windows/project1_a.exe
+#	new file:   Proj/Vo_Kevin_Project1_C++_48982/dist/Debug/Cygwin_4.x-Windows/project1_a.exe
+#	new file:   Proj/Vo_Kevin_Project1_C++_48982/main.cpp
+#	new file:   Proj/Vo_Kevin_Project1_C++_48982/nbproject/Makefile-Debug.mk
+#	new file:   Proj/Vo_Kevin_Project1_C++_48982/nbproject/Makefile-Release.mk
+#	new file:   Proj/Vo_Kevin_Project1_C++_48982/nbproject/Makefile-impl.mk
+#	new file:   Proj/Vo_Kevin_Project1_C++_48982/nbproject/Makefile-variables.mk
+#	new file:   Proj/Vo_Kevin_Project1_C++_48982/nbproject/Package-Debug.bash
+#	new file:   Proj/Vo_Kevin_Project1_C++_48982/nbproject/Package-Release.bash
+#	new file:   Proj/Vo_Kevin_Project1_C++_48982/nbproject/configurations.xml
+#	new file:   Proj/Vo_Kevin_Project1_C++_48982/nbproject/private/Makefile-variables.mk
+#	new file:   Proj/Vo_Kevin_Project1_C++_48982/nbproject/private/configurations.xml
+#	new file:   Proj/Vo_Kevin_Project1_C++_48982/nbproject/private/launcher.properties
+#	new file:   Proj/Vo_Kevin_Project1_C++_48982/nbproject/private/private.xml
+#	new file:   Proj/Vo_Kevin_Project1_C++_48982/nbproject/project.xml
+#
+

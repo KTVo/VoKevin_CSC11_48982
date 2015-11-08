@@ -1,0 +1,31 @@
+1) Branches (conditional)[main.s, line 151] -> BEQ _GuessBonus //If player enters 'a' then GuessBonus will start
+		                                       BNE _boss       // If player enters != 'a' then it'll just banch to the boss
+
+2) Accept & Compare Strings [main.s, line 144] -> LDR R1, address_of_holdString
+							                      LDR R2, [R1]		//Loads *R1 into R2
+												  
+3) Input/Output [Pat.s, line 70-75] -> 	LDR R0, address_of_askPat
+	                                    bl printf
+
+	                                    LDR R0, address_of_scanPat
+	                                    LDR R1, address_of_inChest
+	                                    bl scanf
+										
+4)Makefile and Shellfile -> Repository
+
+5)Functions -> Pat.s, Boss.s, Guess.s
+
+6) Random Number Generator [Guess.s, line 43]-> bl ranNum //Randomizes the number again to make it different from objective 1
+
+7) Loops [Boss.s, lines 47-89] -> for_loop_boss
+
+8) Shifts [Pat.s, line 49]-> MOV R5, R5, LSL#2
+
+9) LDR & STR [main.s, 56-57]-> LDR R1, address_of_pDamage
+	            STR R5, [R1]
+
+10) ADDEQ, SUBEQ [main.s, line 124] -> ADDEQ R5, R5, #10
+
+11) Linking Multiple .o Files -> Repository
+
+12) If-statment [Guess.s, line 71 -74]
