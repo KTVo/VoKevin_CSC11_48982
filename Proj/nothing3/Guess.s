@@ -23,6 +23,8 @@ scanG: .asciz "%d"
 .balign 4
 returnG: .word 0
 
+.balign 4
+displayNum: .asciz "\nRandom Number: %d\n"
 
 .text
 
@@ -31,12 +33,14 @@ guessBonus:
 	LDR R1, address_of_returnG
 	STR LR, [R1]
 
+
 	MOV R8, #78 //Preset, throws lose code
 	MOV R7, #1 //Counts loops for display disTries
 	MOV R5, #0
 	LDR R0, address_of_Prompt1
 	bl printf
 
+	bl ranNum //Randomizes the number again to make it different from objective 1
 //Loops back to this
 gamble:
 	CMP R5, #5
@@ -47,6 +51,7 @@ gamble:
 	MOV R1, R7
 	LDR R0, address_of_disTries
 	bl printf
+
 	//scan
 	LDR R0, address_of_scanG
 	LDR R1, address_of_input
@@ -54,11 +59,16 @@ gamble:
 
 	ADD R7, R7, #1
 
+
 	LDR R0, address_of_input
 	LDR R0, [R0]
 	MOV R9, R0
-	bl ranNum
-	CMP R9, R1
+
+	MOV R1, R10
+	LDR R0, address_of_displayNum
+	bl printf
+
+	CMP R9, R10
 		BEQ correct
 		BLT lesser
 		BGT greater
@@ -99,7 +109,7 @@ address_of_input: .word input
 address_of_disGrt: .word disGrt
 address_of_disLes: .word disLes
 address_of_cInput: .word cInput
-
+address_of_displayNum: .word displayNum
 
 //External
 .global printf

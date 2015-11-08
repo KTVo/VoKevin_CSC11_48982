@@ -26,7 +26,8 @@ ranNum:
 	add r1,#10                   /* Remainder in r1 so add 10 giving between 10 and 99 -> 2 digits */
 
 
-
+	MOV R10, R1 //Set for Guess.s
+	
     @ldr r0, address_of_message   /* Set &message2 as the first parameter of printf */
     @bl printf                    /* Call printf */
 	

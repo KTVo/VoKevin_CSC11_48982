@@ -3,43 +3,50 @@
 .balign 4
 PromptBoss: .asciz "\nAs expected the monster is sleeping as you approached it.\nKill it before it wakes up and slaughters you.\n"
 .balign 4
-bossTurn: .asciz "                     %d/%d TURN\n"
+bossWarn: .asciz "Warning: You must enter 'a' to attack. If you entered in something else, it will count as a miss and no damage will be done.\n"
 .balign 4
-scanBoss: .asciz "%d"
+bossTurn: .asciz "\n                     %d/%d TURN\n"
+.balign 4
+scanBoss: .asciz "%s"
 .balign 4
 disbossHealth: .asciz "Boss' Health: %d"
-
+.balign 4
+bossInstr: .asciz "\n\nEnter 'a' to attack: "
 
 .balign 4
 bWinMess: .asciz "\nCongratulations, you have beaten the boss and have won the game!\n"
 .balign 4
 bLossMess: .asciz "\nUnfortunately you have not beaten the boss. Better luck next time.\n"
-
+.balign 4
+missMess: .asciz "\n**** You missed! ****\n"
 
 .balign 4
 inputBoss: .word 0
 .balign 4
 returnBoss: .word 0
 
+.balign 4
+bosscheckA: .word 'a'
 
 .text
-	.global main
-main:
+	.global bossBattle
+bossBattle:
 	LDR R1, address_of_returnBoss
 	STR LR, [R1]
 
 	LDR R0, address_of_PromptBoss
 	bl printf
 
+	LDR R0, address_of_bossWarn
+	bl printf
+
 	MOV R8, #0 //#setting number of rounds
 
-	//LDR R7, address_of_numOfRounds
-	//LDR R7, [R7]
-
 	MOV R9, #100 //Bosses Health
+
 for_loop_boss:
-	MOV R2, #7
-	MOV R7, #7
+	MOV R2, R6 //For displaying
+	MOV R7, R6 //For comparison
 	ADD R8, R8, #1
 	MOV R1, R8
 
@@ -50,11 +57,24 @@ for_loop_boss:
 	LDR R0, address_of_disbossHealth
 	bl printf
 
+
+	LDR R0, address_of_bossInstr
+	bl printf
+
 	LDR R0, address_of_scanBoss
 	LDR R1, address_of_inputBoss
 	bl scanf
 
-	SUB R9, R9, #13
+	LDR R1, address_of_inputBoss
+	LDR R1, [R1]
+
+	LDR R2, address_of_bosscheckA
+	LDR R2, [R2]
+
+	CMP R1, R2
+		SUBEQ R9, R9, R5
+		BNE DisplayMissed
+firstCheck:
 	CMP R9, #0
 		BLE checkWinBoss
 
@@ -62,6 +82,11 @@ for_loop_boss:
 		BEQ checkWinBoss
 		bl for_loop_boss
 
+
+DisplayMissed:
+	LDR R0, address_of_missMess
+	bl printf
+	bl firstCheck
 
 checkWinBoss:
 	CMP R9, #0
@@ -92,6 +117,10 @@ address_of_bWinMess: .word bWinMess
 address_of_bLossMess: .word bLossMess
 address_of_inputBoss: .word inputBoss
 address_of_returnBoss: .word returnBoss
+address_of_bosscheckA: .word bosscheckA
+address_of_bossInstr: .word bossInstr
+address_of_bossWarn: .word bossWarn
+address_of_missMess: .word missMess
 
 
 //External

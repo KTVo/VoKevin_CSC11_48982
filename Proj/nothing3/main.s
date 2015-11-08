@@ -119,6 +119,7 @@ Challenge2:
 	bl printf
 
 askGuessBonus:
+	MOV R6, #7 //Preset # of Boss Round in case player doesn't do Bonus
 	LDR R0, address_of_askBonus
 	bl printf
 	LDR R0, address_of_scanString
@@ -144,11 +145,15 @@ _GuessBonus:
 	LDR R1, address_of_numOfRounds
 	STR R7, [R1]			///Stores # of boss rounds to memory
 
-	LDR R1, address_of_numOfRounds
-	LDR R1, [R1]
+	LDR R6, address_of_numOfRounds
+	LDR R6, [R6]
 
 _boss:
-	@bl bossFight
+	//Loads accumulative of players damage in to R5 for bossBattle
+	LDR R5, address_of_pDamage
+	LDR R5, [R5]
+
+	bl bossBattle
 _exit:
 	LDR LR, address_of_return
 	LDR LR, [LR]
