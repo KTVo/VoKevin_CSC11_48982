@@ -1,0 +1,20 @@
+	.global main
+main:
+	MOV R1, #2
+	MOV R2, #2
+
+checker:
+	CMP R1, R2
+	BEQ _equal
+
+not_equal:
+	echo "R1 != R2"
+	BL _exit
+
+_equal:
+	echo "R1 == R2"
+
+_exit:
+	MOV R7, #1
+	SWI 0
+
