@@ -16,7 +16,7 @@ read: .word 0
 return: .word 0
 
 .balign 4
-array: .skip 176 //44 int elements * 4 bytes = 176
+array: .skip 180 //45 int elements * 4 bytes = 176
 
 .text
 	.global main
@@ -44,6 +44,10 @@ main:
 	LDR R7, address_of_array //Loads the address of the array into R7
 
 AssignArray:
+	//Returns 0 if input term > 46
+	CMP R1, #45
+		BGT tooLarge
+
 	CMP R2, R1 //compares counter with input term
 		BEQ disResult
 	//Fibonacci calculation
@@ -67,6 +71,16 @@ calArrFib:
 	LDR R4, [R7, +R9] //Loops through the array until CMP R9 > R1
 	CMP R9, R1
 		BLE calArrFib
+	bl disResult
+
+//Returns 0 if term > 46
+tooLarge:
+	MOV R2, #0
+
+	LDR R0, address_of_result
+        bl printf
+
+	bl _exit
 
 disResult:
 	MOV R2, R4 //Sets R2 to R4
