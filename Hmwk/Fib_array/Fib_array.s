@@ -1,3 +1,8 @@
+/* Kevin Vo
+   CSC-11 (48982)
+   11/11/2015
+   Assignment: Array - Fibonacci
+*/
 .data
 .balign 4
 askTerm: .asciz "Enter term for Fibonacci: "
