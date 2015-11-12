@@ -16,7 +16,7 @@ read: .word 0
 return: .word 0
 
 .balign 4
-array: .skip 180 //45 int elements * 4 bytes = 176
+array: .skip 180 //45 int elements * 4 bytes = 180
 
 .text
 	.global main
