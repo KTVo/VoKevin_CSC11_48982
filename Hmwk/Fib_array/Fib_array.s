@@ -20,39 +20,51 @@ main:
 	LDR R1, address_of_return
 	STR LR, [R1]
 
-	LDR R0, address_of_askTerm
+	MOV R9, #0//Counter +4 for array[R9+4]
+
+	LDR R0, address_of_askTerm //Asks user for input
 	bl printf
 
 	LDR R0, address_of_scan
-	LDR R1, address_of_read
+	LDR R1, address_of_read //Takes in input value
 	bl scanf
 
-	LDR R1, address_of_read
+	LDR R1, address_of_read //Loads the address and set the value to R1
 	LDR R1, [R1]
 
-	MOV R2, #1 @counter
-	MOV R4, #1 @first
-	MOV R5, #0 @second
+	MOV R2, #1 //counter
+	MOV R4, #1 //first
+	MOV R5, #0 //second
 
-	LDR R7, address_of_array
+	LDR R7, address_of_array //Loads the address of the array into R7
 
 AssignArray:
 	CMP R2, R1 //compares counter with input term
 		BEQ disResult
+	//Fibonacci calculation
 	ADD R6, R5, R4
 	MOV R5, R4
 	MOV R4, R6
 
+	//Store into array R3 = R7 -> address_of_array + (R2++*4)
 	ADD R3, R7, R2, LSL#2
-	STR R4, [R3]
+	STR R4, [R3]//Stores R4(changing term of fib) -> [R3]
 
-	ADD R2, R2, #1
-	b AssignArray
+	ADD R2, R2, #1 //R2 increment for loop
+	bl AssignArray
+//Sets up the right conditions for the upcoming loop
+Setup:
+	MOV R3, R1 //R3 holds original R1 since R1 will be changing
+	MOV R1, R1, LSL#2 //R1 *= 4 for bytes of int
+
+calArrFib:
+	ADD R9, R9, #4 //R9 += 4 counter for loop and to set array
+	LDR R4, [R7, +R9] //Loops through the array until CMP R9 > R1
+	CMP R9, R1
+		BLE calArrFib
 
 disResult:
-	MOV R2, R4
-
-	MOV R1, R1
+	MOV R2, R4 //Sets R2 to R4
 
 	LDR R0, address_of_result
 	bl printf
