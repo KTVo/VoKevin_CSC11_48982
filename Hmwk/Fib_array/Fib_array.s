@@ -2,7 +2,7 @@
 .balign 4
 askTerm: .asciz "Enter term for Fibonacci: "
 .balign 4
-result: .asciz "Input -> %d Output -> %d"
+result: .asciz "\nInput -> %d Output -> %d\n"
 .balign 4
 scan: .asciz "%d"
 .balign 4
@@ -30,7 +30,7 @@ main:
 	LDR R1, address_of_read
 	LDR R1, [R1]
 
-	MOV R2, #0 @counter
+	MOV R2, #1 @counter
 	MOV R4, #1 @first
 	MOV R5, #0 @second
 
@@ -38,7 +38,7 @@ main:
 
 AssignArray:
 	CMP R2, R1 //compares counter with input term
-		BEQ _disResult
+		BEQ disResult
 	ADD R6, R5, R4
 	MOV R5, R4
 	MOV R4, R6
@@ -50,9 +50,9 @@ AssignArray:
 	b AssignArray
 
 disResult:
-	MOV R2, R1
+	MOV R2, R4
 
-	MOV R1, R4
+	MOV R1, R1
 
 	LDR R0, address_of_result
 	bl printf
@@ -68,6 +68,7 @@ address_of_result: .word result
 address_of_scan: .word scan
 address_of_read: .word read
 address_of_array: .word array
+address_of_return: .word return
 
 .global printf
 .global scanf
