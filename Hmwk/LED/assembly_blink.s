@@ -1,38 +1,8 @@
-@ blink.s
-@ D. Thiebaut
-@ based on the following C program:
-@       
-@ #include <wiringPi.h>
-@ #include <stdio.h>
-@ #include <stdlib.h>
-@ 
-@ int main (void) {
-@   int pin = 7;
-@   printf("Raspberry Pi wiringPi blink test\n");
-@ 
-@   if (wiringPiSetup() == -1) {
-@     printf( "Setup didn't work... Aborting." );
-@     exit (1);
-@   }
-@   
-@   pinMode(pin, OUTPUT);
-@   int i;
-@   for ( i=0; i<10; i++ ) {
-@     digitalWrite(pin, 1);
-@     delay(250);
-@ 
-@     digitalWrite(pin, 0);
-@     delay(250);
-@   }
-@ 
-@   return 0;
-@ }
-@       
-@ To assemble, link, and run:
-@
-@  as -o blink.o blink.s 
-@  gcc -o blink2 blink.o -lwiringPi 
-@  sudo ./blink2 
+/* Kevin Vo
+   Date: 11/26/15
+   Course: CSC-11 (48982)
+   Assignment: Turn on LED - Assembly code from given site
+*/
 
 @ ---------------------------------------
 @       Data Section

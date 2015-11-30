@@ -1,11 +1,7 @@
-/* blink.c
-   D. Thiebaut
-   taken from https://www.raspberrypi.org/forums/viewtopic.php?f=33&t=23090
-   blinks Physical Pin 7 On and Off, 10 times.
-
-   to compile and run:
-   gcc -o blink blink.c -lwiringPi
-   sudo ./blink
+/* Kevin Vo
+   Date: 11/26/15
+   Course: CSC-11 (48982)
+   Assignment: Turn on LED - C code from given site
 */
 
 #include <wiringPi.h>
