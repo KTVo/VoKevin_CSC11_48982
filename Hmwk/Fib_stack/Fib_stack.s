@@ -20,7 +20,7 @@ checkFib:
 	STR LR, [SP,#-4]! //Push LR onto top of stack
 	STR R9, [SP,#-4]! //Push R0 onto top of stack
 
-
+	SUB R5, R9, #1
 
 	//Checks if input == 1
 	CMP R9, #1
@@ -29,13 +29,13 @@ checkFib:
 	b _exit
 
 not_first:
-	SUB R9, R9, #1 //Input -= 1 sof r counter
+	SUB R5, R5, #1 //Input -= 1 sof r counter
 	bl checkFib
 
 	//Fibonacci Calculation
-	ADD R9, R3, R4
+	ADD R5, R3, R4
 	MOV R3, R4
-	MOV R4, R9
+	MOV R4, R5
 
 //Exits back to main
 _exit:
@@ -62,10 +62,10 @@ main:
 	//Checks if R9 > 45, if so return 0
 	CMP R9, #45
 		BGT tooHigh
-	ADD R9, R9, #1
+
 	bl checkFib //Goes to check input == 1 or not for fib. calculation
 
-	MOV R2, R9	//Moves value of R9 Fibonacci value into R2
+	MOV R2, R5	//Moves value of R9 Fibonacci value into R2
 	LDR R1, [SP] //Loads the input into R1
 
 	//Displays input and output with R1 and R2
