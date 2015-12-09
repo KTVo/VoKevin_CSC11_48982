@@ -12,12 +12,6 @@ disResult: .asciz "Terminal Velocity = %d\n"
 disPres: .asciz "Dynamic Pressure = %d\n"
 
 .balign 4
-check: .asciz "\nCheck = %d\n"
-
-.balign 4
-hi: .asciz "hi\n"
-
-.balign 4
 return: .word 0
 
 .text
@@ -69,62 +63,35 @@ dynPressure:
 	MOV R1, R9
 	MOV R4, R1 //R4 = R1 = VtoSQRT
 
-	@LDR R0, address_of_check
-	@bl printf
-
 sqrtBabylonian:
 	MOV R1, R1, LSR#1	//R1 = v/2
-	MOV R3, #0	//Counter for sqrtBabylonian
-	@LDR R0, address_of_hi
-	@bl printf
-	@LDR R0, address_of_check
-	@bl printf
-	//R1 = 11112, good
-	//Maybe R1 - 2 here soon
+	MOV R3, #0	//Counter for while_x_NEQ_y
+	MOV R7, R1	//R7 = x.n = v/2
 
-check_x_GE_one:
-	//R1 = V/2 = 5556, good
-	SUB R1, R1, #2
+while_x_NEQ_y:
+	CMP R1, R3	//x = y?
+		BEQ display
+	MOV R8, R1	
+
+	MOV R2, R7 	//R2 = x.n
+	MOV R4, R9 	//
+	MOV R3, #0	//Counter for s/x.n
+	b dCheck
+
+div_s_over_xn:
+	SUB R4, R4, R1	//Cal. for s/x.n
 	ADD R3, R3, #1
 
-	CMP R1, #1
-		BGE check_x_GE_one
+dCheck:
+	CMP R4, R1
+		BGE div_s_over_xn
 
-
-	MOV R1, R3 //R1 = count++
-	MOV R5, #0
-
-	LDR R0, address_of_check
-	bl printf
-
-while_R1_NEQ_R6:
-
-	@LDR R0, address_of_hi
-	@bl printf
-
-	MOV R6, R1 //y = x.(n+1)
-	ADD R1, R1, R4 //x = (x + VtoSQRT/x)
-	MOV R1, R1, LSR#1
-
-	@LDR R0, address_of_disPres
-	@bl printf
-
-VtoSQRT_over_x:
-        @LDR R0, address_of_hi
-        @bl printf
-
-        SUB R4, R4, R1
-        ADD R5, R5, #1
-        CMP R4, R1
-                BGT VtoSQRT_over_x
-                b while_R1_NEQ_R6
-
-	@CMP R6, R1
-		@BEQ display
+	ADD R1, R1, R3 //x = (x+B)
+	MOV R1, R1, LSR#1 // x/2
+	MOV R7, R1
+	BAL while_x_NEQ_y
 
 display:
-	MOV R1, R1
-	MOV R2, R2
 	LDR R0, address_of_disResult
 	bl printf
 
@@ -136,8 +103,6 @@ exit:
 address_of_disResult: .word disResult
 address_of_return: .word return
 address_of_disPres: .word disPres
-address_of_hi: .word hi
-address_of_check: .word check
 
 //global
 .global printf
