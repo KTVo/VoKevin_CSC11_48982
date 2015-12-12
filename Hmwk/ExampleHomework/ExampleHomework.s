@@ -12,11 +12,8 @@
 .balign 4
  choice2: .asciz "\nEnter 2 for FAHRENHEIT to CENTIGRADE\n"
 .balign 4
-celOutput: .asciz "Centigrade = %d ---> Fahrenheit = %d\n"
-.balign 4
-fahOutput: .asciz "Fahrenheit = %d ---> Centigrade = %d\n"
-.balign 4
 mRetry: .asciz "\nError: Please enter only 1 or 2 for the choices below.\n\n"
+
 scan1: .asciz "%d %d"
 scan2: .asciz "%d"
 inStart: .word 0
@@ -107,8 +104,6 @@ addr_scan2: .word scan2
 addr_inStart: .word inStart
 addr_inEnd: .word inEnd
 addr_inChoice: .word inChoice
-addr_fahOutput: .word fahOutput
-addr_celOutput: .word celOutput
 addr_mRetry: .word mRetry
 
 //External
