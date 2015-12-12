@@ -1,7 +1,8 @@
 /* 
  * File:   main.cpp
- * Author: Kevin
- *
+ * Author: Kevin Vo
+ * Class: CSC-11 (48982)
+ * Assignment: Terminal Velocity (Part 3) - Scaled Integer in C++
  * Created on December 6, 2015, 7:59 PM
  */
 
@@ -10,13 +11,11 @@
 #include <cmath>
 
 using namespace std;
-/*
- * 
- */
+
 int main(int argc, char** argv) {
-     int pi = 0x3243F6A9; //BP-12 WD 28
-     int diaSQ = 0x504816F0; //BP-20
-     int w = 0x19EB851E;//BP-28 WD28
+     int pi = 0x3243F6A9; 
+     int diaSQ = 0x504816F0; 
+     int w = 0x19EB851E;
      int e = 0x9B2EC51;
     int v, q, bot, top;
     
@@ -38,7 +37,7 @@ int main(int argc, char** argv) {
     q>>=24;
     
     cout<<"***** Terminal Velocity (Part 3) - Scaled Integer C++\n";
-    cout<<"Terminal Velocity = "<<sqrt(v)<<endl;
     cout<<"Dynamic Pressure = "<<q<<endl;
+    cout<<"Terminal Velocity = "<<sqrt(v)<<endl;
     return 0;
 }

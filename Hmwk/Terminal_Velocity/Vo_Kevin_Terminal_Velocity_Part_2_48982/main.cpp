@@ -1,10 +1,10 @@
 /* 
  * File:   main.cpp
- * Author: Kevin
- *
- * Created on December 1, 2015, 3:54 PM
+ * Author: Kevin Vo
+ * Class: CSC-11 (48982)
+ * Assignment: Terminal Velocity (Part 2) - Same Calculation in C++
+ * Created on December 6, 2015, 7:59 PM
  */
-
 #include <cstdlib>
 #include <iostream>
 #include <cmath>
@@ -51,7 +51,7 @@ int main(int argc, char** argv) {
     v = x;
     q = 0.5 * e * v * v;
     
-    cout<<"***** Terminal Velocity (PART 2) Simple C++\n";
+    cout<<"***** Terminal Velocity (PART 2) Same Calculation in C++\n";
     cout<<"Terminal Velocity = "<<x<<endl;
     cout<<"Dynamic Pressure = "<<q<<endl;
     return 0;
