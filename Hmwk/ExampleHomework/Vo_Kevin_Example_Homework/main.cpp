@@ -1,7 +1,8 @@
 /* 
  * File:   main.cpp
- * Author: Kevin
- *
+ * Author: Kevin Vo
+ * Class: CSC-11 (48982)
+ * Assignment: Example Homework in C++
  * Created on December 10, 2015, 12:27 AM
  */
 
