@@ -60,8 +60,8 @@ ask:
 fahtocel:
 	LDR R7, =0x8E38F //BP -20 WD -20, = 5/9 = 0.5555
 
-//Converts C to F
-forloopC2F:
+//Converts F to C
+forloopF2C:
 	SUB R8, R5, #32; //(i-32)
 	MUL R9, R8, R7
 	MOV R9, R9, ASR#20 //ASR for suspected negative value
@@ -72,14 +72,14 @@ forloopC2F:
 	bl printf
 	ADD R5, R5, #1
 	CMP R5, R6 //inStart <= inEnd
-		BLE forloopC2F
+		BLE forloopF2C
 		b exit
 
 celtofah:
 	LDR R7, =0x1CCD //BP-12 WD-20, = 9/5
 
 //Converts C to F
-forloopF2C:
+forloopC2F:
 	MUL R8, R5, R7
 	MOV R8, R8, LSR#12
 	ADD R8, R8, #32
@@ -89,7 +89,7 @@ forloopF2C:
 	bl printf
 	ADD R5, R5, #1
 	CMP R5, R6
-		BLE forloopF2C
+		BLE forloopC2F
 		b exit
 exit:
 	MOV R7, #1
