@@ -1,7 +1,7 @@
 /* Kevin Vo
    CSC-11 (48982)
    12/7/15
-   Assignment: Scaled Integer Assembly (Part 5)
+   Assignment: Terminal Velocity - Scaled Integer Assembly (Part 5)
 */
 
 .data

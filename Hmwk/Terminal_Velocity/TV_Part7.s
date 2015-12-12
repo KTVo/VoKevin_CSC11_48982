@@ -1,5 +1,10 @@
-/* Printing two floating point numbers */
-	
+/* Kevin Vo
+   CSC-11 (48982)
+   12/7/15
+   Assignment: Terminal Velocity - Floating Point Register Assembly (Part 7)
+*/
+
+
 	.global	main
 	.func main
 main:
