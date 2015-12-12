@@ -21,6 +21,6 @@ forloopF2C:
 	ADD R5, R5, #1
 	CMP R5, R6 //inStart <= inEnd
 		BLE forloopF2C
-		b exit
+		b main
 
 addr_fahOutput: .word fahOutput

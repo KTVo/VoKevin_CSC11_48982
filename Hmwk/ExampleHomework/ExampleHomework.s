@@ -12,7 +12,7 @@
 .balign 4
  choice2: .asciz "\nEnter 2 for FAHRENHEIT to CENTIGRADE\n"
 .balign 4
-mRetry: .asciz "\nError: Please enter only 1 or 2 for the choices below.\n\n"
+mRetry: .asciz "Enter in any other # to exit.\n"
 
 scan1: .asciz "%d %d"
 scan2: .asciz "%d"
@@ -41,6 +41,10 @@ ask:
         bl printf
         LDR R0, addr_choice2
         bl printf
+
+	LDR R0, addr_mRetry
+	bl printf
+
         LDR R0, addr_scan2
         LDR R1, addr_inChoice
         bl scanf
@@ -49,52 +53,15 @@ ask:
 
 	//Checks input inChoice
 	CMP R4, #1
-		BLT retry
+		BLT exit
 		BEQ celtofah
 	CMP R4, #2
-		BGT retry
+		BGT exit
 		BEQ fahtocel
-fahtocel:
-	LDR R7, =0x8E38F //BP -20 WD -20, = 5/9 = 0.5555
 
-//Converts F to C
-forloopF2C:
-	SUB R8, R5, #32; //(i-32)
-	MUL R9, R8, R7
-	MOV R9, R9, ASR#20 //ASR for suspected negative value
-	ADD R9, R9, #1 //Adjustment for correct output
-	ADD R2, R9
-	MOV R1, R5
-	LDR R0, addr_fahOutput
-	bl printf
-	ADD R5, R5, #1
-	CMP R5, R6 //inStart <= inEnd
-		BLE forloopF2C
-		b exit
-
-celtofah:
-	LDR R7, =0x1CCD //BP-12 WD-20, = 9/5
-
-//Converts C to F
-forloopC2F:
-	MUL R8, R5, R7
-	MOV R8, R8, LSR#12
-	ADD R8, R8, #32
-	MOV R1, R5
-	MOV R2, R8
-	LDR R0, addr_celOutput
-	bl printf
-	ADD R5, R5, #1
-	CMP R5, R6
-		BLE forloopC2F
-		b exit
 exit:
 	MOV R7, #1
 	SWI 0
-retry:
-	LDR R0, addr_mRetry
-	bl printf
-	b ask
 
 addr_stEnd: .word stEnd
 addr_choice1: .word choice1
