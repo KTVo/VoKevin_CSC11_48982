@@ -36,11 +36,12 @@ in1: .word 0
 .balign 4
 in2: .word 0
 .balign 4
-scanL: "%d"
+scanL: .asciz "%d"
 
 .balign 4
 mInvalid1: .asciz "\nYour first input is out of range.\n"
-
+.balign 4
+mInvalid2: .asciz "\nYour second input is out of range.\n"
 .text
 
 	.global main
@@ -123,19 +124,19 @@ askIn1:
 
 checkIn1:
 	CMP R1, #1
-		BLT disInvalid
+		BLT disInvalid1
 		BEQ disVal1
 	CMP R1, #2
 		BEQ disVal2
 	CMP R1, #3
-		BGT disInvalid
+		BGT disInvalid1
 		BEQ disVal3
 
 disVal1:
 	VLDR S8, [SP, #12]
 	VCVT.F64.F32 D15, S8
 	VMOV R2, R3, D15
-	LDR R0 =input1e
+	LDR R0, =input1e
 	bl printf
 
 	b askIn2
@@ -144,20 +145,22 @@ disVal2:
         VLDR S8, [SP, #4]
         VCVT.F64.F32 D15, S8
         VMOV R2, R3, D15
-        LDR R0 =input1e
+        LDR R0, =input1e
 	bl printf
 	b askIn2
 disVal3:
-        VLDR S8, [SP, #8]
+        VLDR S8, [SP, #12]
         VCVT.F64.F32 D15, S8
         VMOV R2, R3, D15
-        LDR R0 =input1e
+        LDR R0, =input1e
 	bl printf
 	b askIn2
 
 disInvalid1:
-
+	LDR R0, addr_mInvalid1
+	bl printf
 	b askIn1
+
 askIn2:
         LDR R0, addr_mIn2
         bl printf
@@ -172,28 +175,42 @@ askIn2:
 checkIn2:
         CMP R2, #4
                 BLT disInvalid2
-                BEQ dis2Val1
+                BEQ dis2Val4
         CMP R2, #5
-                BEQ disVal2
+                BEQ dis2Val5
         CMP R2, #6
-                BGT dis2Invalid
-                BEQ disVal3
+                BGT disInvalid2
+                BEQ dis2Val6
 
-
-
-
-dis2Val1:
+dis2Val4:
         VLDR S8, [SP, #8]
         VCVT.F64.F32 D15, S8
         VMOV R2, R3, D15
-        LDR R0 =input1e
+        LDR R0, =input2e
 	bl printf
+	b checkCorL
+dis2Val5:
+        VLDR S8, [SP, #4]
+        VCVT.F64.F32 D15, S8
+        VMOV R2, R3, D15
+        LDR R0, =input2e
+        bl printf
+	b checkCorL
 
-dis2Val2:
-dis2Val3:
+dis2Val6:
+        VLDR S8, [SP, #8]
+        VCVT.F64.F32 D15, S8
+        VMOV R2, R3, D15
+        LDR R0, =input2e
+        bl printf
+	b checkCorL
 
 disInvalid2:
+	LDR R0, addr_mInvalid2
+	bl printf
+	b askIn2
 
+checkCorL:
 exit:
 	//ADD SP, SP, #+12
 	//LDR LR, [SP], #+12
@@ -218,8 +235,12 @@ addr_st: .word st
 addr_globArr: .word globArr
 addr_in1: .word in1
 addr_in2: .word in2
-mIn1: .word mIn1
-mIn2: .word mIn2
+addr_mIn1: .word mIn1
+addr_mIn2: .word mIn2
 
-input1e: .word input1e
-input2e: .word input2e
+addr_input1e: .word input1e
+addr_input2e: .word input2e
+
+addr_mInvalid1: .word mInvalid1
+addr_mInvalid2: .word mInvalid2
+addr_scanL: .word scanL
