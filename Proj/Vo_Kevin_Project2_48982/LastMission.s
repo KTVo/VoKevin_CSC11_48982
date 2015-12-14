@@ -23,7 +23,8 @@ pLast2: .asciz " that is toxic to you. However it seems that you have found a bo
 pLast3: .asciz " labeled antidote.\nBefore your last dying breathe solve the puzzle"
 .balign 4
 pLast4: .asciz "by guessing the matching sets to obtain the antidote.\n You have 3 turns to do so.\n"
-
+.balign 4
+mWinL: .asciz "\n*** Congratulations, you have opened the box and drank the antido. You have survived and won! ***\n"
 
 .balign 4
 globArr: .skip 12
@@ -36,7 +37,7 @@ in1: .word 0
 .balign 4
 in2: .word 0
 .balign 4
-scanL: .asciz "%d"
+scanLast: .asciz "%d"
 
 .balign 4
 mInvalid1: .asciz "\nYour first input is out of range.\n"
@@ -103,32 +104,26 @@ CalAssign:
 memGame:
 	MOV R10, #4
 	//MOV R4, #0
-
-
-	VLDR S8, [SP,#12]
-	VCVT.F64.F32 D15, S8
-	VMOV R2, R3, D15
- 	LDR R0, =test
-	bl printf
-
+disChart:
+	//Display chart here
 askIn1:
 	LDR R0, addr_mIn1
 	bl printf
 
-	LDR R0, addr_scanL
+	LDR R0, addr_scanLast
 	LDR R1, addr_in1
 	bl scanf
 
-	LDR R1, addr_in1
-	LDR R1, [R1]
+	LDR R6, addr_in1
+	LDR R6, [R6]
 
 checkIn1:
-	CMP R1, #1
+	CMP R6, #1
 		BLT disInvalid1
 		BEQ disVal1
-	CMP R1, #2
+	CMP R6, #2
 		BEQ disVal2
-	CMP R1, #3
+	CMP R6, #3
 		BGT disInvalid1
 		BEQ disVal3
 
@@ -138,7 +133,6 @@ disVal1:
 	VMOV R2, R3, D15
 	LDR R0, =input1e
 	bl printf
-
 	b askIn2
 
 disVal2:
@@ -148,8 +142,9 @@ disVal2:
         LDR R0, =input1e
 	bl printf
 	b askIn2
+
 disVal3:
-        VLDR S8, [SP, #12]
+        VLDR S8, [SP, #8]
         VCVT.F64.F32 D15, S8
         VMOV R2, R3, D15
         LDR R0, =input1e
@@ -165,20 +160,21 @@ askIn2:
         LDR R0, addr_mIn2
         bl printf
 
-        LDR R0, addr_scanL
-        LDR R2, addr_in2
+        LDR R0, addr_scanLast
+        LDR R1, addr_in2
         bl scanf
 
-        LDR R2, addr_in2
-        LDR R2, [R2]
+        LDR R5, addr_in2
+        LDR R5, [R5]
+
 
 checkIn2:
-        CMP R2, #4
+        CMP R5, #4
                 BLT disInvalid2
                 BEQ dis2Val4
-        CMP R2, #5
+        CMP R5, #5
                 BEQ dis2Val5
-        CMP R2, #6
+        CMP R5, #6
                 BGT disInvalid2
                 BEQ dis2Val6
 
@@ -189,8 +185,9 @@ dis2Val4:
         LDR R0, =input2e
 	bl printf
 	b checkCorL
+
 dis2Val5:
-        VLDR S8, [SP, #4]
+        VLDR S8, [SP, #12]
         VCVT.F64.F32 D15, S8
         VMOV R2, R3, D15
         LDR R0, =input2e
@@ -198,7 +195,7 @@ dis2Val5:
 	b checkCorL
 
 dis2Val6:
-        VLDR S8, [SP, #8]
+        VLDR S8, [SP, #4]
         VCVT.F64.F32 D15, S8
         VMOV R2, R3, D15
         LDR R0, =input2e
@@ -211,6 +208,29 @@ disInvalid2:
 	b askIn2
 
 checkCorL:
+	CMP R6, #1
+		BEQ checkSet1
+	CMP R6, #2
+		BEQ checkSet2
+	CMP R6, #3
+		BEQ checkSet3
+
+checkSet1:
+	CMP R5, #5
+		BEQ win
+		BNE disChart
+checkSet2:
+	CMP R5, #6
+		BEQ win
+		BNE disChart
+checkSet3:
+	CMP R5, #4
+		BEQ win
+		BNE disChart
+win:
+	LDR R0, addr_mWinL
+	bl printf
+	b exit
 exit:
 	//ADD SP, SP, #+12
 	//LDR LR, [SP], #+12
@@ -219,12 +239,14 @@ exit:
 	//BX LR
 	MOV R7, #1
 	SWI 0
+
 addr_mWin: .word mWin
 addr_pLast1: .word pLast1
 addr_pLast2: .word pLast2
 addr_pLast3: .word pLast3
 addr_pLast4: .word pLast4
 addr_disVal: .word disVal
+addr_mWinL: .word mWinL
 
 addr_testd: .word testd
 addr_euler: .word euler
@@ -243,4 +265,4 @@ addr_input2e: .word input2e
 
 addr_mInvalid1: .word mInvalid1
 addr_mInvalid2: .word mInvalid2
-addr_scanL: .word scanL
+addr_scanLast: .word scanLast
