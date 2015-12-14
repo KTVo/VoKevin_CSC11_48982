@@ -1,11 +1,15 @@
 .data
 euler: .float 2.7181281
-r: .float 0.318309
+r: .float 1.318309
 one: .float 1.000000
 pi: .float 3.14159
 st: .float 2.6879
 
-disVal: .asciz "\nThis Input is equal to value: %f\n"
+test: .asciz "Float = %f\n"
+.balign 4
+testd: .asciz"R44 = %d\n"
+.balign 4
+disVal: .asciz "\nThis Input is equal to value: %d\n"
 
 .balign 4
 mWin: .asciz "\nCongrats you have guessed a match and have found some antidote and managed to save yourself.\n"
@@ -26,8 +30,9 @@ globArr: .skip 12
 
 	.global main
 main:
-	//STR LR, [SP, #-4]!
-	//SUB SP, SP, #4
+	//PUSH {R4, LR}
+	STR LR, [SP, #-12]!
+	SUB SP, SP, #12
 
 	MOV R4, #0 //Counter
 
@@ -51,46 +56,69 @@ main:
 	VADD.F32 S10, S11, S12 //euler = euler + rate + pi = new rate
 
 
-	LDR R1, addr_globArr //R1 <- &globArr
+	//LDR R1, addr_globArr //R1 <- &globArr
 
-loopCalAssign:
-	CMP R4, #3
-		BGE memGame
+CalAssign:
+	//CMP R4, #24
+		//BGE memGame
 	VMUL.F32 S10, S10, S10 //r^n
 
 	VSUB.F32 S10, S12, S10 //(1-r^n)
 
 	VMUL.F32 S10, S9, S10 //a * (1 - r^n)
+	VPUSH {S10}
+	//VSTR S10, [SP, #4]
 
 	VSUB.F32 S8, S12, S11 //S8 = 1 - r
 
+	//VSTR S8, [SP, #8]
+
 	VDIV.F32 S8, S10, S8 //S8 = a(1-r^n)/(1-r)
 
-	//Stores Float into Array
-	ADD R3, R1, R4, LSL#2
-	VSTR S14, [R3]
-	ADD R4, R4, #1
-	b loopCalAssign
+	VABS.F32 S8, S8
+
+	VSQRT.F32 S8, S8
+
+	//VSTR S8, [SP, #12]
+
+	VCVT.F64.F32 D15, S8
+
+	VMOV R2, R3, D15
+	LDR R0, =test
+	bl printf
+
+	//ADD R4, R4, #1
+	//b loopCalAssign
 
 memGame:
-	//VCVT.F64.F32 D14, S14
-
-	//VMOV R2, R3, D14
-	//bl printf
-
+	MOV R10, #4
+	//MOV R4, #0
+	LDR R0, addr_testd
+	bl printf
+	VPOP {S10}
+	VMOV S8, S10
+	VLDR S8, [SP,#4]
+	VCVT.F64.F32 D15, S8
+ 	LDR R0, =test
+	VMOV R2, R3, D15
+	bl printf
+stopread:
 exit:
-	//ADD SP, SP, #+4
-	//LDR LR, [SP], #+4
+	ADD SP, SP, #+12
+	LDR LR, [SP], #+12
 	//BX LR
-	MOV R7, #1
-	SWI 0
-
+	POP {R4, LR}
+	BX LR
+	//MOV R7, #1
+	//SWI 0
 addr_mWin: .word mWin
 addr_pLast1: .word pLast1
 addr_pLast2: .word pLast2
 addr_pLast3: .word pLast3
 addr_pLast4: .word pLast4
+addr_disVal: .word disVal
 
+addr_testd: .word testd
 addr_euler: .word euler
 addr_r: .word r
 addr_one: .word one
