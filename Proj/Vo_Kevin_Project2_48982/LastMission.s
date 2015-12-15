@@ -15,15 +15,15 @@ disVal: .asciz "\nThis Input is equal to value: %d\n"
 .balign 4
 mWin: .asciz "\nCongrats you have guessed a match and have found some antidote and managed to save yourself.\n"
 .balign 4
-pLast1: .asciz "\nAfter defeating the beast you have realized that its porous skin released a compound"
+pLast1: .asciz "\nAfter encountering the beast you have realized that its porous skin released a\ncompound"
 .balign 4
-pLast2: .asciz " that is toxic to you. However it seems that you have found a box belonging to a nearby corpse"
+pLast2: .asciz " that is toxic to you. However it seems that you have found a box\nbelonging to a nearby corpse"
 .balign 4
-pLast3: .asciz " labeled antidote.\nBefore your last dying breathe solve the puzzle"
+pLast3: .asciz " labeled antidote.\nBefore your last dying breathe solve the puzzle "
 .balign 4
-pLast4: .asciz "by guessing the matching sets to obtain the antidote.\n You have 3 turns to do so.\n"
+pLast4: .asciz "by guessing the matching sets to obtain the antidote.\nYou have 3 turns to do so.\n"
 .balign 4
-mWinL: .asciz "\n*** Congratulations, you have opened the box and drank the antidote. You have survived and won! ***\n"
+mWinL: .asciz "\n*** Congratulations, you have opened the box and drank the antidote.\nYou have survived and won! ***\n"
 
 .balign 4
 globArr: .skip 12
@@ -54,11 +54,11 @@ disC3: .asciz "|  4  |  5  |  6  |\n|     |     |     |\n-------------------\n"
 
 .text
 
-	.global main
-main:
+	.global LastMission
+LastMission:
 	//PUSH {R4, LR}
-	//STR LR, [SP, #-12]!
-	//SUB SP, SP, #12
+	STR LR, [SP, #-4]!
+	SUB SP, SP, #4
 
 	MOV R4, #0 //Counter
 
@@ -79,7 +79,7 @@ main:
 	LDR R1, addr_pi
 	VLDR S13, [R1]
 
-	VADD.F32 S10, S11, S10 //euler = euler + rate + pi = new rate
+	VADD.F32 S10, S11, S10
 	VADD.F32 S10, S12, S10
 
 	//LDR R1, addr_globArr //R1 <- &globArr
@@ -105,13 +105,19 @@ CalAssign:
 
 	VSTR S8, [SP, #12]
 
-	//VCVT.F64.F32 D15, S8
-
-	//ADD R4, R4, #1
-	//b loopCalAssign
 
 memGame:
 	MOV R10, #0 //Set counters
+
+	//Displays prompt, continuation of first game
+	LDR R0, addr_pLast1
+	bl printf
+	LDR R0, addr_pLast2
+	bl printf
+	LDR R0, addr_pLast3
+	bl printf
+	LDR R0, addr_pLast4
+	bl printf
 disChart:
 	LDR R0, addr_disC1
 	bl printf
@@ -258,8 +264,8 @@ win:
 	bl printf
 	b exit
 exit:
-	//ADD SP, SP, #+12
-	//LDR LR, [SP], #+12
+	ADD SP, SP, #+4
+	LDR LR, [SP], #+4
 	//BX LR
 	//POP {R4, LR}
 	//BX LR

@@ -1,12 +1,19 @@
 /* Kevin Vo
-   11/4/2015
+   12/14/2015
    CSC-11 (48982)
-   Project 1
+   Project 2
 */
 
 //Data Main
 .data
-
+.balign 4
+inY: .word 0
+.balign 4
+checkY: .word 'y'
+.balign 4
+scanY: .asciz "%s"
+.balign 4
+Proj2: .asciz "Attention: Would you like to jump ahead to PROJECT 2? (y/n)\n"
 .balign 4
 Prompt1: .asciz "Objective: Solve the challenges to obtain weapon and kill the beast.\n"
 .balign 4
@@ -45,6 +52,24 @@ numOfRounds: .word 0
 main:
 	LDR R1, address_of_return
 	STR LR, [R1]
+
+	//Asks player if they'd like to skip and run Project 2's code
+	LDR R0, addr_Proj2
+	bl printf
+
+	LDR R0, addr_scanY
+	LDR R1, addr_inY
+	bl scanf
+
+	LDR R1, addr_inY
+	LDR R1, [R1]
+
+	LDR R2, addr_checkY
+	LDR R2, [R2]
+
+	CMP R1, R2
+		BEQ proj2_jump
+
 
 	LDR R0, address_of_Prompt1
 	bl printf
@@ -168,12 +193,18 @@ _boss:
 	LDR R5, [R5]
 
 	bl bossBattle
+proj2_jump:
+	b LastMission
 _exit:
 	LDR LR, address_of_return
 	LDR LR, [LR]
 
 	BX LR
 
+addr_inY: .word inY
+addr_scanY: .word scanY
+addr_checkY: .word checkY
+addr_Proj2: .word Proj2
 address_of_pDamage: .word pDamage
 address_of_storeit: .word storeit
 address_of_Prompt1: .word Prompt1
