@@ -24,9 +24,6 @@ pLast3: .asciz " labeled antidote.\nBefore your last dying breathe solve the puz
 pLast4: .asciz "by guessing the matching sets to obtain the antidote.\nYou have 3 turns to do so.\n"
 .balign 4
 mWinL: .asciz "\n*** Congratulations, you have opened the box and drank the antidote.\nYou have survived and won! ***\n"
-
-.balign 4
-globArr: .skip 12
 .balign 4
 mIn1: .asciz "\nEnter your first guess (Valid Inputs = 1,2,3): "
 .balign 4
@@ -56,9 +53,8 @@ disC3: .asciz "|  4  |  5  |  6  |\n|     |     |     |\n-------------------\n"
 
 	.global LastMission
 LastMission:
-	//PUSH {R4, LR}
-	STR LR, [SP, #-4]!
-	SUB SP, SP, #4
+	STR LR, [SP, #-4]! //Push LR onto the top of the stack
+	SUB SP, SP, #4	//Make room
 
 	MOV R4, #0 //Counter
 
@@ -82,8 +78,6 @@ LastMission:
 	VADD.F32 S10, S11, S10
 	VADD.F32 S10, S12, S10
 
-	//LDR R1, addr_globArr //R1 <- &globArr
-
 CalAssign:
 	VMUL.F32 S10, S10, S10 //r^n
 
@@ -91,11 +85,11 @@ CalAssign:
 
 	VMUL.F32 S10, S9, S10 //a * (1 - r^n)
 
-	VSTR S10, [SP, #4]
+	VSTR S10, [SP, #4] //Loads S10 into array
 
 	VSUB.F32 S8, S12, S11 //S8 = 1 - r
 
-	VSTR S8, [SP, #8]
+	VSTR S8, [SP, #8] //Loads S8 into next element of array
 
 	VDIV.F32 S8, S10, S8 //S8 = a(1-r^n)/(1-r)
 
@@ -103,7 +97,7 @@ CalAssign:
 
 	VSQRT.F32 S8, S8
 
-	VSTR S8, [SP, #12]
+	VSTR S8, [SP, #12] //Loads new value of S8 into array
 
 
 memGame:
@@ -118,6 +112,8 @@ memGame:
 	bl printf
 	LDR R0, addr_pLast4
 	bl printf
+
+//Displays the box of the game
 disChart:
 	LDR R0, addr_disC1
 	bl printf
@@ -126,13 +122,15 @@ disChart:
 	LDR R0, addr_disC3
 	bl printf
 
+//Checks number of rounds, if exceed 3 player loses
 	CMP R10, #3
 		BEQ lose
 	ADD R10, R10, #1
 	MOV R1, R10
-	LDR R0, addr_mRounds
+	LDR R0, addr_mRounds	//Alerts the player of their rounds
 	bl printf
-	//Display chart here
+
+//Asks for the first input here
 askIn1:
 	LDR R0, addr_mIn1
 	bl printf
@@ -144,6 +142,7 @@ askIn1:
 	LDR R6, addr_in1
 	LDR R6, [R6]
 
+//Check for input1 for next condition
 checkIn1:
 	CMP R6, #1
 		BLT disInvalid1
@@ -154,6 +153,7 @@ checkIn1:
 		BGT disInvalid1
 		BEQ disVal3
 
+//Displays the hidden value of the first guess
 disVal1:
 	VLDR S8, [SP, #12]
 	VCVT.F64.F32 D15, S8
@@ -178,11 +178,13 @@ disVal3:
 	bl printf
 	b askIn2
 
+//Displays invalid input
 disInvalid1:
 	LDR R0, addr_mInvalid1
 	bl printf
 	b askIn1
 
+//Prompts player for second input
 askIn2:
         LDR R0, addr_mIn2
         bl printf
@@ -194,7 +196,7 @@ askIn2:
         LDR R5, addr_in2
         LDR R5, [R5]
 
-
+//Checks second input to set condition
 checkIn2:
         CMP R5, #4
                 BLT disInvalid2
@@ -205,6 +207,7 @@ checkIn2:
                 BGT disInvalid2
                 BEQ dis2Val6
 
+//Convert B32 to B64 for display of input2's hidden value
 dis2Val4:
         VLDR S8, [SP, #8]
         VCVT.F64.F32 D15, S8
@@ -234,6 +237,7 @@ disInvalid2:
 	bl printf
 	b askIn2
 
+//Check input1 to check to input2
 checkCorL:
 	CMP R6, #1
 		BEQ checkSet1
@@ -242,6 +246,7 @@ checkCorL:
 	CMP R6, #3
 		BEQ checkSet3
 
+//Compare input2 based on input1's value for end game condition
 checkSet1:
 	CMP R5, #5
 		BEQ win
@@ -255,6 +260,7 @@ checkSet3:
 		BEQ win
 		BNE disChart
 
+//Displays win or loose mission
 lose:
 	LDR R0, addr_mLose
 	bl printf
@@ -264,11 +270,8 @@ win:
 	bl printf
 	b exit
 exit:
-	ADD SP, SP, #+4
-	LDR LR, [SP], #+4
-	//BX LR
-	//POP {R4, LR}
-	//BX LR
+	ADD SP, SP, #+4	//Close room
+	LDR LR, [SP], #+4 //Pop LR
 	MOV R7, #1
 	SWI 0
 
@@ -286,7 +289,6 @@ addr_r: .word r
 addr_one: .word one
 addr_pi: .word pi
 addr_st: .word st
-addr_globArr: .word globArr
 addr_in1: .word in1
 addr_in2: .word in2
 addr_mIn1: .word mIn1
