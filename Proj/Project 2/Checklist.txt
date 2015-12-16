@@ -1,0 +1,38 @@
+Kevin Vo
+CSC-11 (48982)
+December 15, 2015
+Assignment: Project 2 Checklist
+
+
+
+1) Float:
+
+euler: .float 2.7181281 -----> LastMission.s, line 2-6
+r: .float 1.318309		-----> LastMission.s, line 2-6
+one: .float 1.000000	-----> LastMission.s, line 2-6
+pi: .float 3.14159		-----> LastMission.s, line 2-6
+st: .float 2.6879		-----> LastMission.s, line 2-6
+
+Float Load & Calculation:		-----> LastMission.s, lines 62 - 100
+	
+	VDIV.F32 S8, S10, S8
+	VABS.F32 S8, S8
+	VSQRT.F32 S8, S8
+	VSTR S8, [SP, #12] //Loads new value of S8 into array
+
+Float Display:		-----> LastMission.s, lines 159-180
+
+        VLDR S8, [SP, #4]
+        VCVT.F64.F32 D15, S8
+        VMOV R2, R3, D15
+        LDR R0, =input1e
+		bl printf
+		
+
+2) Array:		-----> LastMission.s, lines 56, 57, 89, 93, 101, 167, 175, 213,  221, 229
+
+		STR LR, [SP, #-4]! //Push LR onto the top of the stack
+		SUB SP, SP, #4	//Make room	
+		VSTR S10, [SP, #4] //Load S10 into array
+		VSTR S8, [SP, #8] //Loads S8 into next element of array
+		VLDR S8, [SP, #4]

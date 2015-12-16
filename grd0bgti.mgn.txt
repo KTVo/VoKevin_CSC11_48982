@@ -1,0 +1,22 @@
+﻿Project 2 zipped
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	new file:   Checklist.txt
+#	new file:   Vo, Kevin - Project 2 - 48982.zip
+#	renamed:    Vo_Kevin_Project2_48982/Boss.s -> Vo_Kevin_Project_2_Assembly_48982/Boss.s
+#	renamed:    Vo_Kevin_Project2_48982/Guess.s -> Vo_Kevin_Project_2_Assembly_48982/Guess.s
+#	renamed:    Vo_Kevin_Project2_48982/LastMission.s -> Vo_Kevin_Project_2_Assembly_48982/LastMission.s
+#	renamed:    Vo_Kevin_Project2_48982/Pat.s -> Vo_Kevin_Project_2_Assembly_48982/Pat.s
+#	renamed:    Vo_Kevin_Project2_48982/Project2 -> Vo_Kevin_Project_2_Assembly_48982/Project2
+#	renamed:    Vo_Kevin_Project2_48982/Project2.sh -> Vo_Kevin_Project_2_Assembly_48982/Project2.sh
+#	renamed:    Vo_Kevin_Project2_48982/README.md -> Vo_Kevin_Project_2_Assembly_48982/README.md
+#	renamed:    Vo_Kevin_Project2_48982/divMod.s -> Vo_Kevin_Project_2_Assembly_48982/divMod.s
+#	renamed:    Vo_Kevin_Project2_48982/main.s -> Vo_Kevin_Project_2_Assembly_48982/main.s
+#	renamed:    Vo_Kevin_Project2_48982/randTest.s -> Vo_Kevin_Project_2_Assembly_48982/randTest.s
+#	new file:   Vo_Kevin_Project_2_Writeup.docx
+#
+
