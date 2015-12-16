@@ -78,20 +78,21 @@ LastMission:
 	VADD.F32 S10, S11, S10
 	VADD.F32 S10, S12, S10
 
+//Calculates the float to be stored in the array as hidden numbers for the guessing game
 CalAssign:
-	VMUL.F32 S10, S10, S10 //r^n
+	VMUL.F32 S10, S10, S10
 
-	VSUB.F32 S10, S13, S10 //(1-r^n)
+	VSUB.F32 S10, S13, S10
 
-	VMUL.F32 S10, S9, S10 //a * (1 - r^n)
+	VMUL.F32 S10, S9, S10
 
-	VSTR S10, [SP, #4] //Loads S10 into array
+	VSTR S10, [SP, #4] //Load S10 into array
 
-	VSUB.F32 S8, S12, S11 //S8 = 1 - r
+	VSUB.F32 S8, S12, S11
 
 	VSTR S8, [SP, #8] //Loads S8 into next element of array
 
-	VDIV.F32 S8, S10, S8 //S8 = a(1-r^n)/(1-r)
+	VDIV.F32 S8, S10, S8
 
 	VABS.F32 S8, S8
 
